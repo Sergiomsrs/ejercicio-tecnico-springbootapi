@@ -20,7 +20,6 @@ public class CharacterRepository {
     @Value("${integration.rym.base-path}")
     private String basePath;
 
-    private String characterPath;
 
     private String getCharacterPath(int page) {
         return basePath + "/character?page=" + page;
@@ -47,7 +46,7 @@ public class CharacterRepository {
 
     public List<CharacterDto> findByName(String name) {
 
-        JsonNode response = httpClientService.doGet("https://rickandmortyapi.com/api/character/?name=" + name, JsonNode.class);
+        JsonNode response = httpClientService.doGet(basePath + "/character/?name=" + name, JsonNode.class);
         List<CharacterDto> charactersOfPage = CharacterMapper.toDtoList(response);
         return new ArrayList<>(charactersOfPage);
 
@@ -55,7 +54,7 @@ public class CharacterRepository {
 
     public String getImage(int id){
 
-        JsonNode response = httpClientService.doGet("https://rickandmortyapi.com/api/character/" + id, JsonNode.class);
+        JsonNode response = httpClientService.doGet( basePath + "/character/" + id, JsonNode.class);
 
 
 
