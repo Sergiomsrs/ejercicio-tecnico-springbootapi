@@ -30,8 +30,17 @@ public class CharacterRepository {
         List<CharacterDto> characters = new ArrayList<>();
         int currentPage = 1;
         int totalPages = 1;
+        int iterationCount = 0;
+
 
         while (currentPage <= totalPages) {
+
+            iterationCount++;
+
+            if (iterationCount > 50) {
+                throw new RuntimeException("Se alcanzó el número máximo de iteraciones permitido, posible bucle infinito.");
+            }
+
             JsonNode response = httpClientService.doGet(getCharacterPath(currentPage), JsonNode.class);
             List<CharacterDto> charactersOfPage = CharacterMapper.toDtoList(response);
 
@@ -40,7 +49,6 @@ public class CharacterRepository {
             currentPage++;
             totalPages = response.get("info").get("pages").asInt();
         }
-
         return characters;
     }
 
